@@ -44,7 +44,6 @@ public class main {
         int relances = 2;
         int compteurManches = 1;
 
-
         boolean reponseRelances = true;
         // Intro du jeu
         System.out.println(ROUGE + " |Y A H T Z E E| " + RESET);
@@ -86,8 +85,8 @@ public class main {
                 }
                 relances--;
             }
-            controlePoint(des, combinaison, pointTotaux);
-            pointTotaux += retourneLeNombreDePointTotaux(des, combinaison, pointTotaux);
+            controlePoint(des, combinaison);
+            pointTotaux += retourneLeNombreDePointTotaux(des, combinaison);
             System.out.println(pointTotaux);
             relances = 2;
             compteurManches++;
@@ -460,7 +459,8 @@ public class main {
      * @param des tableau des dés lancés
      * @return le nombre de points par combinaison
      */
-    private static int retourneLeNombreDePointTotaux(int[] des, boolean[] combinaison, int pointTotaux) {
+    private static int retourneLeNombreDePointTotaux(int[] des, boolean[] combinaison) {
+        int pointObtenu = 0;
 
         int compteurSommesDes = 0;
         boolean yahtzee = estYahtzee(des);
@@ -473,30 +473,30 @@ public class main {
         int pointBrelan = compterLeNombreDeDes3Fois(des) * CONSECUTIF_BRELAN;
 
         if (yahtzee && !combinaison[0]) {
-            pointTotaux += POINT_YAHTZEE;
+            pointObtenu = POINT_YAHTZEE;
             combinaison[0] = true;
         } else if (grandeSuite && !combinaison[1]) {
-            pointTotaux += POINT_GRANDE_SUITE;
+            pointObtenu = POINT_GRANDE_SUITE;
             combinaison[1] = true;
         } else if (petiteSuite && !combinaison[2]) {
-            pointTotaux += POINT_PETITE_SUITE;
+            pointObtenu = POINT_PETITE_SUITE;
             combinaison[2] = true;
         } else if (estFullHouse && !combinaison[3]) {
-            pointTotaux += POINT_FULL_HOUSE;
+            pointObtenu = POINT_FULL_HOUSE;
             combinaison[3] = true;
         } else if (carre && !combinaison[4]) {
-            pointTotaux += pointCarre;
+            pointObtenu = pointCarre;
             combinaison[4] = true;
         } else if (brelan && !combinaison[5]) {
-            pointTotaux += pointBrelan;
+            pointObtenu = pointBrelan;
             combinaison[5] = true;
-        }else if (!combinaison[6]) {
-            pointTotaux += retournerSommeDes(des,compteurSommesDes);
+        } else if (!combinaison[6]) {
+            pointObtenu = retournerSommeDes(des, compteurSommesDes);
             combinaison[6] = true;
         } else {
-            pointTotaux += 0;
+            pointObtenu = 0;
         }
-        return pointTotaux;
+        return pointObtenu;
     }
 
     /**
@@ -504,7 +504,7 @@ public class main {
      *
      * @param des tableau des dés lancés
      */
-    private static void controlePoint(int[] des, boolean[] combinaisons, int pointTotaux) {
+    private static void controlePoint(int[] des, boolean[] combinaisons) {
 
         boolean yahtzee = estYahtzee(des);
         boolean grandeSuite = estGrandeSuite(des);
@@ -513,10 +513,9 @@ public class main {
         boolean carre = estCarre(des);
         boolean brelan = estBrelan(des);
 
-
         if (yahtzee && !combinaisons[0]) {
             System.out.println("Yahtzee !");
-        } else if (grandeSuite &&!combinaisons[1]) {
+        } else if (grandeSuite && !combinaisons[1]) {
             System.out.println("Grande Suite !");
         } else if (petiteSuite && !combinaisons[2]) {
             System.out.println("Petite Suite !");
